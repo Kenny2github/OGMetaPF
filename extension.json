@@ -1,0 +1,24 @@
+{
+	"name": "OGMetaPF",
+	"author": "Kenny2wiki",
+	"url": "https://github.com/Kenny2github/OGMetaPF",
+	"descriptionmsg": "ogmetapf-desc",
+	"license-name": "MIT",
+	"type": "parserhook",
+	"AutoloadClasses": {
+		"OGMetaPF": "OGMetaPF.class.php"
+	},
+	"ExtensionMessagesFiles": {
+		"OGMetaMagic": "OGMetaPF.magic.php"
+	},
+	"MessagesDirs": {
+		"OGMetaPF": [
+			"i18n"
+		]
+	},
+	"Hooks": {
+		"OutputPageParserOutput": "OGMetaPF::onOutputPageParserOutput",
+		"ParserFirstCallInit": "OGMetaPF::onParserFirstCallInit"
+	},
+	"manifest_version": 1
+}

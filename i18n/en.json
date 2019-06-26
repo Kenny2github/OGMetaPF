@@ -1,0 +1,9 @@
+{
+	"@metadata": {
+		"authors": [
+			"Kenny2wiki"
+		]
+	},
+	"ogmetapf-desc": "Add OpenGraph meta tags through parser functions.",
+	"ogmetapf-default-desc": "This wiki has no default description! Set one at [[MediaWiki:Ogmetapf-default-desc]]"
+}
