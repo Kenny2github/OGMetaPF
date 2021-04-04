@@ -60,7 +60,7 @@ class OGMetaPF {
 		$ogMetaDesc = $parserOutput->getExtensionData('metadesc');
 
 		if ($ogMetaImage !== null) {
-			$metaImage = wfFindFile(Title::newFromDBkey($ogMetaImage));
+			$metaImage = wfFindFile($ogMetaImage);
 		} else {
 			$metaImage = false;
 		}
