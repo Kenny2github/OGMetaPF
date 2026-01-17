@@ -1,4 +1,11 @@
 <?php
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Html\Html;
+use MediaWiki\Output\OutputPage;
+use MediaWiki\Parser\Parser;
+use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Title\Title;
+
 class OGMetaPF {
 	public static function onParserFirstCallInit(Parser $parser) {
 		$parser->setFunctionHook('metaimage', [ __CLASS__, 'metaImagePF' ]);
@@ -36,7 +43,7 @@ class OGMetaPF {
 	public static function metaDescPF(Parser $parser, $metaDesc, $echoback = '') {
 		global $wgLang;
 		$parserOutput = $parser->getOutput();
-		$metaDesc = MessageCache::singleton()->transform(
+		$metaDesc = MediaWikiServices::getInstance()->getMessageCache()->transform(
 			$metaDesc, false, $wgLang, $parser->getTitle()
 		);
 		if ($parserOutput->getExtensionData('metadesc') !== null) {
@@ -55,12 +62,16 @@ class OGMetaPF {
 	public static function onOutputPageParserOutput(OutputPage &$out, ParserOutput $parserOutput) {
 		global $wgLogo, $wgSitename, $wgXhtmlNamespaces;
 
+		$services = MediaWikiServices::getInstance();
+		$repoGroup = $services->getRepoGroup();
+		$urlUtils = $services->getUrlUtils();
+
 		$ogMetaImage = $parserOutput->getExtensionData('metaimage');
 		$ogMetaTitle = $parserOutput->getExtensionData('metatitle');
 		$ogMetaDesc = $parserOutput->getExtensionData('metadesc');
 
 		if ($ogMetaImage !== null) {
-			$metaImage = wfFindFile($ogMetaImage);
+			$metaImage = $repoGroup->findFile($ogMetaImage);
 		} else {
 			$metaImage = false;
 		}
@@ -86,12 +97,12 @@ class OGMetaPF {
 
 		if ($metaImage !== false) {
 			if (is_object($metaImage)) {
-				$meta['og:image'] = wfExpandUrl($metaImage->createThumb(1200, 630));
+				$meta['og:image'] = $urlUtils->expand($metaImage->createThumb(1200, 630));
 			} else {
 				$meta['og:image'] = $metaImage;
 			}
 		} else {
-			$meta['og:image'] = wfExpandUrl($wgLogo);
+			$meta['og:image'] = $urlUtils->expand($wgLogo);
 		}
 		if ($ogMetaDesc !== null) {
 			$meta['og:description'] = $ogMetaDesc;
